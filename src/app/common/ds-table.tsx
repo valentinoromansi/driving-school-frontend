@@ -1,4 +1,4 @@
-"use server"
+'use client'
 
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
@@ -9,7 +9,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
+import { SortDirection } from '../model/model';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
+// import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+// import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export type ColumnDefinition<T> = {
   key: T,
@@ -22,11 +26,21 @@ export type ColumnDefinition<T> = {
 type DsTableProps<Row extends { id: number }> = {
   columnsDefinition: ColumnDefinition<keyof Row>[],
   rows: Row[],
+  isLoading: boolean
 }
 
-export default async function DsTable<Row extends { id: number; [key: string]: any }>({
+// const filterIcon: Record<SortDirection | 'NONE', any> = {
+//   'ASC': <ArrowDownwardIcon color='success'/>,
+//   'DESC': <ArrowUpwardIcon color='success'/>,
+//   'NONE': <ArrowUpwardIcon color='disabled'/>
+// }
+
+
+
+export default function DsTable<Row extends { id: number; [key: string]: any }>({
   columnsDefinition,
-  rows
+  rows,
+  isLoading = true
 } : DsTableProps<Row>) {
   //const [page, setPage] = React.useState(0);
   //const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -39,14 +53,27 @@ export default async function DsTable<Row extends { id: number; [key: string]: a
   //  setRowsPerPage(+event.target.value);
   //  setPage(0);6gtf2
   //};
-
+  const renderSkeletonCells = () => {
+    return [1,2,3].map(row =>
+      <TableRow>
+        {
+          columnsDefinition.map(col =>
+            <TableCell>
+              <Skeleton count={10} height={'100px'}/>
+            </TableCell>  
+          )
+        }
+      </TableRow> 
+      )
+  }
+  
   const transformValueToDisplayFormat = (columnDefinition: ColumnDefinition<keyof Row>, value: any) => {
     return columnDefinition?.format?.(value) ?? value
   }
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-    <TableContainer sx={{ maxHeight: '70vh' }}>
+    <TableContainer sx={{ height: '70vh' }}>
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
@@ -54,25 +81,28 @@ export default async function DsTable<Row extends { id: number; [key: string]: a
               <TableCell
                 key={columnDef.key.toString()}
                 align={columnDef.align ?? 'justify'}
-                style={{ minWidth: columnDef.minWidth }}
+                style={{ minWidth: columnDef.minWidth, fontWeight: 'bold' }}
+                width={ columnDef.minWidth }
               >
                 {columnDef.label}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map(row => {
+        <TableBody>          
+          
+          { isLoading && renderSkeletonCells() }
+            
+          {rows.map(row => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                  {Object.keys(row).map((rowKey: string) => {
+                <TableRow hover tabIndex={-1} key={row.id}>
+                  {columnsDefinition.map(columnDef => {
                     // Skip 'id' column and any other that is not defined in definition(could come from row object but its ignored)
-                    const columnDefinition = columnsDefinition.find(cd => cd.key == rowKey)
+                    const columnDefinition = columnsDefinition.find(cd => cd.key == columnDef.key)
                     if(!columnDefinition) return null
-                    const value = row[rowKey];
+                    const value = row[columnDef.key];
                     return (
-                      <TableCell key={row.id + rowKey} align={columnDefinition?.align}>
+                      <TableCell key={row.id + columnDef.key.toString()} align={columnDefinition?.align}>
                         {
                           transformValueToDisplayFormat(columnDefinition, value)
                         }
@@ -97,6 +127,8 @@ export default async function DsTable<Row extends { id: number; [key: string]: a
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
     */
+
+    <p>FOOTER</p>
    }
   </Paper>
   );

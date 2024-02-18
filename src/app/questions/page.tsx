@@ -1,8 +1,15 @@
+'use client'
+
 import Image from "next/image";
 import styles from "./question.module.css";
 import DsTable, { ColumnDefinition } from "../common/ds-table";
-import { Chip } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import { AnswersGroup } from "./answers-group";
+import { Question } from "../model/model";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+
 //import { useEffect, useState } from "react";
 
 // type QuestionKeys = 'id' | 'text' | 'questionType'
@@ -13,12 +20,10 @@ import { AnswersGroup } from "./answers-group";
 //type Question = {
 //  [K in QuestionKeys]: K extends 'id' ? number : string;
 //};
-type Question = {
-  id: number,
-  text: string,
-  questionType: { id: string },
-  answers: { id: number, text: string, correct: boolean }[],
-  description: string,
+
+
+export type Filter = {
+  question: string;
 }
 
 
@@ -27,13 +32,7 @@ const columnsDefinition: ColumnDefinition<keyof Question>[] = [
   { 
     key: 'text',
     label: 'Question',
-    minWidth: 100,
-  },
-  {
-    key: 'questionType',
-    label: 'Type',
-    minWidth: 90,
-    format: ({ id }) => <Chip label={id} />,
+    minWidth: 280,
   },
   {
     key: 'answers',
@@ -42,38 +41,39 @@ const columnsDefinition: ColumnDefinition<keyof Question>[] = [
     format: (values: { id: number, text: string, correct: boolean }[]) =>
       <AnswersGroup answers={values}/>
   },
+  {
+    key: 'questionType',
+    label: 'Type',
+    minWidth: 90,
+    format: ({ id }) => <Chip label={id} />,
+  }
 ];
 
 
 
 
 
-export default async function Questions() {
+export default function Questions() {
 
-  const questions: Question[] = await fetch(
-    'http://localhost:8080/api/questions?page=0&size=60', 
-    { cache: 'no-store' })
-  .then(response => response.json())
+  const [questions, setQuestion] = useState([])
+
+  const { isLoading, error, data } = useQuery<Question[]>({
+    queryKey: ['QUESTIONS'],
+    queryFn: () =>
+      fetch('http://localhost:8080/api/questions?page=0&size=50').then((res) =>
+        res.json(),
+      ),
+  })
 
 
   return (
     <div style={{ padding: '1rem', maxWidth: '1280px', margin: 'auto' }}>
-
+      
       <DsTable<Question>
         columnsDefinition={columnsDefinition}
-        rows={questions}
-
+        rows={data || []}
+        isLoading={isLoading}
       />
-
-      {
-          questions.map((q) => {
-            return (
-              <p>
-                { q.text }
-              </p>
-            )
-          })
-        }
     </div>
   );
 }
