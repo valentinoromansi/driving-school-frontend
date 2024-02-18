@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import { SortDirection } from '../model/model';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
-import { NoDataRow } from '../questions/no-data-row';
+import { NoDataRow } from './no-data-row';
 // import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 // import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 

@@ -8,6 +8,8 @@ import { AnswersGroup } from "./answers-group";
 import { Question } from "../model/model";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import usePagination from "@mui/material/usePagination/usePagination";
+import { DsHeaders, HeaderKey } from "../common/ds-headers";
 
 
 //import { useEffect, useState } from "react";
@@ -50,25 +52,37 @@ const columnsDefinition: ColumnDefinition<keyof Question>[] = [
 ];
 
 
-
+type ApiResponse = {
+  questions: Question[];
+  headers: DsHeaders
+}
 
 
 export default function Questions() {
 
-  const { isLoading, error, data: questions } = useQuery<Question[]>({
+  //const { items } = usePagination()
+
+  const { isLoading, error, data: response } = useQuery<ApiResponse>({
     queryKey: ['QUESTIONS'],
-    queryFn: () =>
-      fetch('http://localhost:8080/api/questions?page=0&size=50').then((res) =>
-        res.json(),
-      ),
+    queryFn: async () => {
+      const response =  await fetch('http://localhost:8080/api/questions?page=0&size=50')
+      const questions = await response.json()
+      const headers = response.headers;
+      console.log(headers.get(HeaderKey["X-Total-Count"]))
+      return { questions, headers: new DsHeaders(headers) }
+    }
   })
 
   return (
     <div style={{ padding: '1rem', maxWidth: '1280px', margin: 'auto' }}>
-      
+      <p>
+        {
+          JSON.stringify(response?.headers.get('X-Total-Count'))
+        }
+      </p>
       <DsTable<Question>
         columnsDefinition={columnsDefinition}
-        rows={questions || []}
+        rows={response?.questions || []}
         isLoading={isLoading}
       />
     </div>
