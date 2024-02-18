@@ -55,9 +55,7 @@ const columnsDefinition: ColumnDefinition<keyof Question>[] = [
 
 export default function Questions() {
 
-  const [questions, setQuestion] = useState([])
-
-  const { isLoading, error, data } = useQuery<Question[]>({
+  const { isLoading, error, data: questions } = useQuery<Question[]>({
     queryKey: ['QUESTIONS'],
     queryFn: () =>
       fetch('http://localhost:8080/api/questions?page=0&size=50').then((res) =>
@@ -65,13 +63,12 @@ export default function Questions() {
       ),
   })
 
-
   return (
     <div style={{ padding: '1rem', maxWidth: '1280px', margin: 'auto' }}>
       
       <DsTable<Question>
         columnsDefinition={columnsDefinition}
-        rows={data || []}
+        rows={questions || []}
         isLoading={isLoading}
       />
     </div>

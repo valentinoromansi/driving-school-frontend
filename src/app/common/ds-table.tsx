@@ -12,6 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import { SortDirection } from '../model/model';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
+import { NoDataRow } from '../questions/no-data-row';
 // import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 // import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
@@ -92,6 +93,7 @@ export default function DsTable<Row extends { id: number; [key: string]: any }>(
         <TableBody>          
           
           { isLoading && renderSkeletonCells() }
+          { !isLoading && rows.length == 0 && <NoDataRow/> }
             
           {rows.map(row => {
               return (
