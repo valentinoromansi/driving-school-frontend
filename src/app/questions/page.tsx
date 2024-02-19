@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiResponse, DsHeaders, HeaderKey } from "../common/api";
 import usePagination from "../hook/use-pagination";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { InfiniteQuestions } from "./infinite-questions";
 
 
 const columnsDefinition: ColumnDefinition<keyof Question>[] = [
@@ -62,15 +62,21 @@ export default function Questions() {
 
   return (
     <div style={{ padding: '1rem', maxWidth: '1280px', margin: 'auto' }}>
-      <DsTable<Question>
-        columnsDefinition={columnsDefinition}
-        rows={response?.questions || []}
-        isLoading={isLoading}
-        pagination={pagination}
-      />
+      
+      <InfiniteQuestions></InfiniteQuestions>
+      
+      
       {
-        JSON.stringify(pagination)
-      }
+      //  <DsTable<Question>
+      //    columnsDefinition={columnsDefinition}
+      //    rows={response?.questions || []}
+      //    isLoading={isLoading}
+      //    pagination={pagination}
+      //    />
+      //{
+      //  JSON.stringify(pagination)
+      //}
+    }
 
     </div>
   );
