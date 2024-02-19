@@ -13,6 +13,7 @@ import { SortDirection } from '../model/model';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import { NoDataRow } from './no-data-row';
+import { PaginationResult } from '../hook/use-pagination';
 // import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 // import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
@@ -27,7 +28,8 @@ export type ColumnDefinition<T> = {
 type DsTableProps<Row extends { id: number }> = {
   columnsDefinition: ColumnDefinition<keyof Row>[],
   rows: Row[],
-  isLoading: boolean
+  pagination: PaginationResult,
+  isLoading: boolean,
 }
 
 // const filterIcon: Record<SortDirection | 'NONE', any> = {
@@ -41,6 +43,7 @@ type DsTableProps<Row extends { id: number }> = {
 export default function DsTable<Row extends { id: number; [key: string]: any }>({
   columnsDefinition,
   rows,
+  pagination,
   isLoading = true
 } : DsTableProps<Row>) {
   //const [page, setPage] = React.useState(0);
@@ -117,20 +120,16 @@ export default function DsTable<Row extends { id: number; [key: string]: any }>(
         </TableBody>
       </Table>
     </TableContainer>
-   {
-    /*
-     <TablePagination
-      rowsPerPageOptions={[10, 25, 100]}
-      component="div"
-      count={rows.length}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={handleChangePage}
-      onRowsPerPageChange={handleChangeRowsPerPage}
-    />
-    */
-
-    <p>FOOTER</p>
+   {    
+    <TablePagination
+     rowsPerPageOptions={[10, 25, 50]}
+     component="div"
+     count={-1}
+     rowsPerPage={pagination.itemsPerPage}
+     page={pagination.currentPage}
+     onPageChange={(e, page) => { pagination.handlePageChange(page) }}
+     onRowsPerPageChange={(e) => { pagination.handleItemsPerPageChange(+e.target.value)}}
+   />
    }
   </Paper>
   );

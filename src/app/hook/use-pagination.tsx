@@ -1,46 +1,61 @@
 import { useState } from 'react';
 
 interface PaginationOptions {
-  totalItems: number;
-  itemsPerPage: number;
+  itemsPerPage?: number;
 }
 
-interface PaginationResult {
-  currentPage: number;
+export interface PaginationResult {
   totalPages: number;
-  goToPage: (pageNumber: number) => void;
-  nextPage: () => void;
-  prevPage: () => void;
+  itemsPerPage: number;
+  totalItems?: number;
+  currentPage: number;
+  handlePageChange: (pageNumber: number) => void;
+  //setTotalItems: (totalItems: number) => void;
+  setItemsPerPage: (itemsPerPage: number) => void;
+  handleTotalItemsChange: (totalItems: number) => void;
+  handleItemsPerPageChange: (itemsPerPage: number) => void;
 }
 
-const usePagination = ({ totalItems, itemsPerPage }: PaginationOptions): PaginationResult => {
+export const usePagination = ({ 
+  itemsPerPage: _itemsPerPage = 10
+}: PaginationOptions): PaginationResult => {
+  const [itemsPerPage, setItemsPerPage] = useState(_itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(Math.ceil(totalItems / itemsPerPage));
 
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  const goToPage = (pageNumber: number) => {
-    const validPageNumber = Math.max(1, Math.min(pageNumber, totalPages));
+  const handlePageChange = (pageNumber: number) => {
+    console.log(pageNumber + " " + totalPages)
+    const validPageNumber = Math.max(1, Math.min(pageNumber, totalPages - 1));
     setCurrentPage(validPageNumber);
   };
 
-  const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
+  // const setTotalItems = (totalItems: number) => {
+  //   setTotalPages(Math.ceil(totalItems / itemsPerPage));
+  // };
+
+  const handleItemsPerPageChange = (itemsPerPage: number) => {
+    setCurrentPage(1)
+    setItemsPerPage(itemsPerPage);
+    setTotalPages(Math.ceil(totalItems / itemsPerPage));
   };
 
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
-    }
-  };
+  const handleTotalItemsChange = (totalItems: number) => {
+    setTotalItems(totalItems)
+    setTotalPages(Math.ceil(totalItems / itemsPerPage));
+  }
+
 
   return {
-    currentPage,
     totalPages,
-    goToPage,
-    nextPage,
-    prevPage,
+    itemsPerPage,
+    totalItems,
+    currentPage,
+    handlePageChange,
+    // setTotalItems,
+    handleTotalItemsChange,
+    handleItemsPerPageChange,
+    setItemsPerPage,
   };
 };
 

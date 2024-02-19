@@ -8,8 +8,8 @@ import { AnswersGroup } from "./answers-group";
 import { Question } from "../model/model";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import usePagination from "@mui/material/usePagination/usePagination";
-import { DsHeaders, HeaderKey } from "../common/ds-headers";
+import { ApiResponse, DsHeaders, HeaderKey } from "../common/api";
+import usePagination from "../hook/use-pagination";
 
 
 //import { useEffect, useState } from "react";
@@ -52,39 +52,41 @@ const columnsDefinition: ColumnDefinition<keyof Question>[] = [
 ];
 
 
-type ApiResponse = {
-  questions: Question[];
-  headers: DsHeaders
-}
-
 
 export default function Questions() {
 
-  //const { items } = usePagination()
+  const pagination = usePagination({itemsPerPage: 20})
 
-  const { isLoading, error, data: response } = useQuery<ApiResponse>({
+  
+  const { isLoading, error, data: response, refetch } = useQuery<ApiResponse<Question[]>>({
     queryKey: ['QUESTIONS'],
     queryFn: async () => {
-      const response =  await fetch('http://localhost:8080/api/questions?page=0&size=50')
+      const url = `http://localhost:8080/api/questions?page=${pagination.currentPage}&size=${pagination.itemsPerPage}`
+      const response =  await fetch(url)
       const questions = await response.json()
-      const headers = response.headers;
-      console.log(headers.get(HeaderKey["X-Total-Count"]))
-      return { questions, headers: new DsHeaders(headers) }
+      const headers = new DsHeaders(response.headers);
+      const totalItems = headers.getAsNumber('X-Total-Count') 
+      if(totalItems)
+        pagination.handleTotalItemsChange(totalItems)
+      return { questions, headers }
     }
   })
+  
+  useEffect(() => {
+    refetch()
+  }, [pagination.currentPage])
 
   return (
     <div style={{ padding: '1rem', maxWidth: '1280px', margin: 'auto' }}>
-      <p>
-        {
-          JSON.stringify(response?.headers.get('X-Total-Count'))
-        }
-      </p>
       <DsTable<Question>
         columnsDefinition={columnsDefinition}
         rows={response?.questions || []}
         isLoading={isLoading}
+        pagination={pagination}
       />
+      {
+        JSON.stringify(pagination)
+      }
     </div>
   );
 }
