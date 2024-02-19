@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiResponse, DsHeaders, HeaderKey } from "../common/api";
 import usePagination from "../hook/use-pagination";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { InfiniteQuestions } from "./infinite-questions";
 
 
