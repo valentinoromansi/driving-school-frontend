@@ -46,17 +46,7 @@ export default function DsTable<Row extends { id: number; [key: string]: any }>(
   pagination,
   isLoading = true
 } : DsTableProps<Row>) {
-  //const [page, setPage] = React.useState(0);
-  //const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  //const handleChangePage = (event: unknown, newPage: number) => {
-  //  setPage(newPage);
-  //};
-//
-  //const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //  setRowsPerPage(+event.target.value);
-  //  setPage(0);6gtf2
-  //};
+  
   const renderSkeletonCells = () => {
     return [1,2,3].map(row =>
       <TableRow>

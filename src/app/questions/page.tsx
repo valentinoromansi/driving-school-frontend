@@ -3,31 +3,14 @@
 import Image from "next/image";
 import styles from "./question.module.css";
 import DsTable, { ColumnDefinition } from "../common/ds-table";
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Input, InputLabel, TextField } from "@mui/material";
 import { AnswersGroup } from "./answers-group";
 import { Question } from "../model/model";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiResponse, DsHeaders, HeaderKey } from "../common/api";
 import usePagination from "../hook/use-pagination";
-
-
-//import { useEffect, useState } from "react";
-
-// type QuestionKeys = 'id' | 'text' | 'questionType'
-
-//const questionKeysList = ['id', 'text', 'questionType'] as const;
-//type QuestionKeys = typeof questionKeysList[number];
-//
-//type Question = {
-//  [K in QuestionKeys]: K extends 'id' ? number : string;
-//};
-
-
-export type Filter = {
-  question: string;
-}
-
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 const columnsDefinition: ColumnDefinition<keyof Question>[] = [
@@ -57,6 +40,7 @@ export default function Questions() {
 
   const pagination = usePagination({itemsPerPage: 20})
 
+  const [text, setText] = useState("")
   
   const { isLoading, error, data: response, refetch } = useQuery<ApiResponse<Question[]>>({
     queryKey: ['QUESTIONS'],
@@ -87,6 +71,7 @@ export default function Questions() {
       {
         JSON.stringify(pagination)
       }
+
     </div>
   );
 }
