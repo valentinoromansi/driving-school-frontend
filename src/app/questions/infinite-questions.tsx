@@ -4,28 +4,38 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { DsHeaders } from "../common/api";
+import axios from 'axios'
 
 export const InfiniteQuestions = () => {
 
   const { ref, inView } = useInView()
 
+  //const [totalResultCount, setTotalResultCount] = useState<number | null>(null);
 
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage} = useInfiniteQuery({
     queryKey: ["QUERY"],
     queryFn: async({ pageParam }) => {
-      const url = `http://localhost:8080/api/questions?page=${pageParam}&size=20`
-      const response =  await fetch(url)
-      const questions = await response.json()
-      return questions
+      const url = `http://localhost:8080/api/questions`
+      const response = await axios.get(url, { params: { page: pageParam,  size: 100 }})
+      const headers = new DsHeaders(response.headers);
+      //console.log(headers.getAsNumber("X-Total-Count"))
+      //setTotalResultCount(headers.getAsNumber("X-Total-Count"))
+      return response.data
     },
     initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
+    getNextPageParam: (_, allPages) => {
+      //const hasMore = totalResultCount && (allPages.length * 100 < totalResultCount)
+      //console.log(totalResultCount)
+      //console.log(allPages.length * 100)
+      //console.log(hasMore)
+      console.log(allPages.length + 1)
       return allPages.length + 1;
-    }, 
+    },
   })
 
   useEffect(() => {
     if(hasNextPage && inView) {
+      //console.log("TOTAL:" + totalResultCount)
       fetchNextPage()
     }
   }, [inView, hasNextPage])

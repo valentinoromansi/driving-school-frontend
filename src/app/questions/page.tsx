@@ -12,6 +12,7 @@ import { ApiResponse, DsHeaders, HeaderKey } from "../common/api";
 import usePagination from "../hook/use-pagination";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { InfiniteQuestions } from "./infinite-questions";
+import axios from 'axios'
 
 
 const columnsDefinition: ColumnDefinition<keyof Question>[] = [
@@ -43,23 +44,23 @@ export default function Questions() {
 
   const [text, setText] = useState("")
   
-  const { isLoading, error, data: response, refetch } = useQuery<ApiResponse<Question[]>>({
-    queryKey: ['QUESTIONS'],
-    queryFn: async () => {
-      const url = `http://localhost:8080/api/questions?page=${pagination.currentPage}&size=${pagination.itemsPerPage}`
-      const response =  await fetch(url)
-      const questions = await response.json()
-      const headers = new DsHeaders(response.headers);
-      const totalItems = headers.getAsNumber('X-Total-Count') 
-      if(totalItems)
-        pagination.handleTotalItemsChange(totalItems)
-      return { questions, headers }
-    }
-  })
+ //const { isLoading, error, data: response, refetch } = useQuery<ApiResponse<Question[]>>({
+ //  queryKey: ['QUESTIONS'],
+ //  queryFn: async () => {
+ //    const url = `http://localhost:8080/api/questions`
+ //    const response = await axios.get(url, { params: { page: pagination.currentPage,  size: pagination.itemsPerPage }})
+ //    const questions = response.data
+ //    const headers = new DsHeaders(response.headers);
+ //    const totalItems = headers.getAsNumber('X-Total-Count') 
+ //    if(totalItems)
+ //      pagination.handleTotalItemsChange(totalItems)
+ //    return { questions, headers }
+ //  }
+ //})
   
-  useEffect(() => {
-    refetch()
-  }, [pagination.currentPage])
+  //useEffect(() => {
+  //  refetch()
+  //}, [pagination.currentPage])
 
   return (
     <div style={{ padding: '1rem', maxWidth: '1280px', margin: 'auto' }}>
