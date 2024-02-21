@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from '@mui/material/styles';
 import theme from "./theme";
 import ReactQueryProvider from "./react-query-provider";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const inter = Inter({ subsets: ["latin"] });
 

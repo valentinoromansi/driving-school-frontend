@@ -11,7 +11,6 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { SortDirection } from '../model/model';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
 import { NoDataRow } from './no-data-row';
 import { PaginationResult } from '../hook/use-pagination';
 // import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
