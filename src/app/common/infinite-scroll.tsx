@@ -3,8 +3,10 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { DsHeaders } from "../common/api";
+import { DsHeaders } from "./api";
 import axios, { AxiosResponse } from 'axios'
+import Skeleton from "react-loading-skeleton";
+
 
 type InfiniteQuestionsProps<ResponseDataT> = {
   pageSize: number,
@@ -12,7 +14,7 @@ type InfiniteQuestionsProps<ResponseDataT> = {
   itemComponent: (item: ResponseDataT) => JSX.Element
 }
 
-export const InfiniteQuestions = <ResponseDataT,> ({
+export const InfiniteScroll = <ResponseDataT,> ({
   pageSize,
   url,
   itemComponent
@@ -44,14 +46,15 @@ export const InfiniteQuestions = <ResponseDataT,> ({
 
 
   return(
-    <div style={{ width: '600px', height: '800px', border: '1px solid black', overflow: 'scroll' }}>
-      <button onClick={() => { fetchNextPage() }}>LOIAD MORE</button>
+    <div style={{ overflow: 'scroll', height: '100%', overflowY: 'scroll', boxSizing: 'content-box'}}>
       {
-        data?.pages.map( items => 
+        data?.pages.map(items => 
           items.map(item => itemComponent?.(item))
         )
       }
-       <div ref={ref}></div>
+       <div ref={ref}>
+        <Skeleton count={2} highlightColor="gray" height={'100px'}/>
+       </div>
     </div>
   )
 

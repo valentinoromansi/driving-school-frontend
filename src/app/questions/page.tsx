@@ -10,31 +10,14 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiResponse, DsHeaders, HeaderKey } from "../common/api";
 import usePagination from "../hook/use-pagination";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { InfiniteQuestions } from "./infinite-questions";
+import { InfiniteScroll } from "../common/infinite-scroll";
 import axios from 'axios'
+import MobilePage from "./mobile-page";
+import DesktopPage from "./desktop-page";
+import MediaQuery from "react-responsive";
 
 
-const columnsDefinition: ColumnDefinition<keyof Question>[] = [
-  { 
-    key: 'text',
-    label: 'Question',
-    minWidth: 280,
-  },
-  {
-    key: 'answers',
-    label: 'Answers',
-    minWidth: 370,
-    format: (values: { id: number, text: string, correct: boolean }[]) =>
-      <AnswersGroup answers={values}/>
-  },
-  {
-    key: 'questionType',
-    label: 'Type',
-    minWidth: 90,
-    format: ({ id }) => <Chip label={id} />,
-  }
-];
+
 
 
 
@@ -61,19 +44,17 @@ export default function Questions() {
   //}, [pagination.currentPage])
 
   return (
-    <div style={{ padding: '1rem', maxWidth: '1280px', margin: 'auto' }}>
-      
-      <InfiniteQuestions<Question>
-        pageSize={10}
-        url={'http://localhost:8080/api/questions'}
-        itemComponent={item => 
-          <div style={{ border: '1px solid gray', padding: '12px' }}>
-            <b>{item.text}</b>
-            <br/><br/>
-            <AnswersGroup answers={item.answers}/>
-          </div>
-        }>
-      </InfiniteQuestions>
+    <div style={{ padding: '8px', maxWidth: '1280px', height: '100%', margin: 'auto' }}>
+      <MediaQuery maxWidth={600}>
+        <div style={{ width: '100%' }}>
+          <MobilePage/>
+        </div>
+      </MediaQuery>
+      <MediaQuery minWidth={600}>
+        <div style={{ width: '100%' }}>
+           <DesktopPage/>
+        </div>
+      </MediaQuery>
       
       
       {
