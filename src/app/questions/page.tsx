@@ -41,8 +41,6 @@ const columnsDefinition: ColumnDefinition<keyof Question>[] = [
 export default function Questions() {
 
   const pagination = usePagination({itemsPerPage: 20})
-
-  const [text, setText] = useState("")
   
  //const { isLoading, error, data: response, refetch } = useQuery<ApiResponse<Question[]>>({
  //  queryKey: ['QUESTIONS'],
@@ -65,7 +63,17 @@ export default function Questions() {
   return (
     <div style={{ padding: '1rem', maxWidth: '1280px', margin: 'auto' }}>
       
-      <InfiniteQuestions></InfiniteQuestions>
+      <InfiniteQuestions<Question>
+        pageSize={10}
+        url={'http://localhost:8080/api/questions'}
+        itemComponent={item => 
+          <div style={{ border: '1px solid gray', padding: '12px' }}>
+            <b>{item.text}</b>
+            <br/><br/>
+            <AnswersGroup answers={item.answers}/>
+          </div>
+        }>
+      </InfiniteQuestions>
       
       
       {
