@@ -1,5 +1,5 @@
 
-import { Box, ListItem, ListItemButton, ListItemText } from "@mui/material"
+import { Box, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
 import DraftsIcon from '@mui/icons-material/Drafts';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -16,14 +16,14 @@ export const AnswersGroup = ({answers}: AnswersGroupProps) => {
     return <></>
   
   return <>
-    <ListItem sx={{ flexDirection: 'column' }} alignItems="flex-start" disablePadding>
+    <ListItem sx={{ flexDirection: 'column', gap: '4px' }} alignItems="flex-start" disablePadding>
       {
         answers.map(answer =>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }} >
             { answer.correct 
               ? <CheckCircleIcon sx={{ alignSelf: 'center' }} color="success"/>
               : <CancelIcon sx={{ alignSelf: 'center' }} color="error"/>} 
-            <ListItemText primary={answer.text} />
+            <Box  sx={{ fontWeight: 'medium' }}>{answer.text}</Box >
           </Box>
       )}
     </ListItem>

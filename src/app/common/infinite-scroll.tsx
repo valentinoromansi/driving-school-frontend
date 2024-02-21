@@ -6,17 +6,22 @@ import { useInView } from "react-intersection-observer";
 import { DsHeaders } from "./api";
 import axios, { AxiosResponse } from 'axios'
 import Skeleton from "react-loading-skeleton";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { SxProps } from "@mui/material";
+import { Box } from "@mui/system";
 
 
 type InfiniteQuestionsProps<ResponseDataT> = {
   pageSize: number,
   url: string,
+  itemWrapperSx?: SxProps
   itemComponent: (item: ResponseDataT) => JSX.Element
 }
 
 export const InfiniteScroll = <ResponseDataT,> ({
   pageSize,
   url,
+  itemWrapperSx,
   itemComponent
 } : InfiniteQuestionsProps<ResponseDataT>) => {
 
@@ -46,16 +51,16 @@ export const InfiniteScroll = <ResponseDataT,> ({
 
 
   return(
-    <div style={{ overflow: 'scroll', height: '100%', overflowY: 'scroll', boxSizing: 'content-box'}}>
-      {
-        data?.pages.map(items => 
-          items.map(item => itemComponent?.(item))
-        )
-      }
+    <Box style={{ overflow: 'scroll', height: '100%', boxSizing: 'content-box', marginRight: '-16px'}}>
+      <Box sx={{...itemWrapperSx}}>
+        {
+          data?.pages.map(items => items.map(item => itemComponent?.(item)) )
+        }
+      </Box>
        <div ref={ref}>
         <Skeleton count={2} highlightColor="gray" height={'100px'}/>
        </div>
-    </div>
+    </Box>
   )
 
 }
