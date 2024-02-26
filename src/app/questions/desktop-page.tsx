@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import usePagination from '../hook/use-pagination'
 import DsTable, { ColumnDefinition } from '../common/ds-table'
 import { Question } from '../model/model'
-import { AnswersGroup } from './answers-group';
+import { Answer, AnswersGroup } from './answers-group';
 import { Chip } from '@mui/material';
 import axios from 'axios';
 import { ApiResponse, DsHeaders } from '../common/api';
@@ -18,7 +18,7 @@ const columnsDefinition: ColumnDefinition<keyof Question>[] = [
     key: 'answers',
     label: 'Answers',
     minWidth: 370,
-    format: (values: { id: number, text: string, correct: boolean }[]) =>
+    format: (values: Answer[]) =>
       <AnswersGroup answers={values}/>
   },
   {
