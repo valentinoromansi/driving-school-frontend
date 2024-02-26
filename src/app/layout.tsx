@@ -21,6 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="preconnect" href="https://rsms.me/"></link>
+      <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
         <body className={inter.className}>
           <ThemeProvider theme={theme}>
             <ReactQueryProvider>

@@ -25,7 +25,7 @@ export default function Questions() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
-  return (
+  return ( 
     <div style={{ padding: '8px', maxWidth: '1280px', margin: 'auto' }}>
       <MediaQuery maxWidth={600}>
         <div style={{ width: '100%' }}>

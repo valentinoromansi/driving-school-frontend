@@ -32,7 +32,7 @@ export const InfiniteScroll = <ResponseDataT,> ({
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage} = useInfiniteQuery({
     queryKey: ["QUERY"],
     queryFn: async({ pageParam }) => {
-      const response = await axios.get<ResponseDataT[]>(url, { params: { page: pageParam - 1,  size: pageSize }})
+      const response = await axios.get<ResponseDataT[]>(url, { params: { page: pageParam - 1,  size: 1 }})
       const headers = new DsHeaders(response.headers);
       setTotalResultCount(headers.getAsNumber("X-Total-Count"))
       return response.data
