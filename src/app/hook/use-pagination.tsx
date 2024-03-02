@@ -20,7 +20,7 @@ export const usePagination = ({
   itemsPerPage: _itemsPerPage = 10
 }: PaginationOptions): PaginationResult => {
   const [itemsPerPage, setItemsPerPage] = useState(_itemsPerPage);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(Math.ceil(totalItems / itemsPerPage));
 
@@ -35,7 +35,7 @@ export const usePagination = ({
   // };
 
   const handleItemsPerPageChange = (itemsPerPage: number) => {
-    setCurrentPage(1)
+    setCurrentPage(0)
     setItemsPerPage(itemsPerPage);
     setTotalPages(Math.ceil(totalItems / itemsPerPage));
   };
