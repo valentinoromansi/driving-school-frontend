@@ -17,5 +17,6 @@ export type Question = {
   text: string,
   questionType: { id: string },
   answers: { id: number, text: string, correct: boolean }[],
+  resources: { id: number, uri: string }[],
   description: string,
 }

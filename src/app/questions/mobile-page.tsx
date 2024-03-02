@@ -1,8 +1,9 @@
+
 import React from 'react'
 import { InfiniteScroll } from '../common/infinite-scroll'
 import { Question } from '../model/model'
 import { AnswerGiven, AnswersGroup } from './answers-group'
-import { Card, CardContent, Typography } from '@mui/material'
+import { Card, CardContent, TextField, Typography } from '@mui/material'
 
 const answersGiven: AnswerGiven[] = [
   { id: 1, checked: true },
@@ -16,6 +17,8 @@ const answersGiven: AnswerGiven[] = [
 const MobilePage = () => {
   return (
     <div style={{ width: '100%', height: '100vh', overflow: 'hidden'}}>
+      <TextField>
+      </TextField>
       <InfiniteScroll<Question>
         itemWrapperSx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
         pageSize={10}
@@ -42,6 +45,9 @@ const QuestionCard = ({ question, answersGiven }: QuestionCardProps) => {
         <CardContent>
           <Typography fontWeight={'bold'}>{question.text}</Typography>
           <br/>
+          {
+            question.resources?.map(resource => <img style={{ maxWidth: '100%', maxHeight: '12rem' }} src={'https://' + resource.uri}></img>)
+          }
           <AnswersGroup answers={question.answers} answersGiven={answersGiven}/>
         </CardContent>
       </Card>
