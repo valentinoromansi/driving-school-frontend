@@ -1,11 +1,13 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import { InfiniteScroll } from '../common/infinite-scroll'
 import { Question } from '../model/model'
 import { AnswerGiven, AnswersGroup } from './answers-group'
 import { Box, Button, Card, CardContent, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material'
 import { Cancel, SearchOutlined, Visibility } from '@mui/icons-material'
 import { useForm } from 'react-hook-form';
+import { API_ENDPOINT, BASE_URL, getQuestions } from '../common/api'
+import { QuestionsFilter } from '../model/filter'
 
 const answersGiven: AnswerGiven[] = [
   { id: 1, checked: true },
@@ -16,38 +18,33 @@ const answersGiven: AnswerGiven[] = [
   { id: 6, checked: true }
 ]
 
-type QuestionsFilterType = {
-  question: string
-}
-
 const MobilePage = () => {
 
-  const {
-    register,
-    getValues,
-    setValue,
-    watch,
-    resetField,
-
-  } = useForm<QuestionsFilterType>();
+  const [filter, setFilter] = useState<QuestionsFilter>({
+    text: ''
+  });
+  const [appliedFilter, setAppliedFilter] = useState<QuestionsFilter>({
+    text: ''
+  });
 
   return (
-    <div style={{ width: '100%', height: '100vh', overflow: 'hidden'}}>
+    <div style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
       <Card sx={{ padding: '16px' }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }}>
           <FormControl sx={{ flexGrow: 1 }}>
             <InputLabel>Title</InputLabel>
             <OutlinedInput
-              {...register("question")}
+              onChange={(e) => { setFilter({...filter, text: e.target.value}) }}
+              value={filter.text}
               label="Title"
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
-                    onClick={() => { resetField('question') }}
+                    onClick={() => { setFilter({...filter, text: ''}) }}
                   >
                     {
-                      watch('question') && <Cancel/>
+                      filter.text && <Cancel/>
                     } 
                   </IconButton>
                 </InputAdornment>
@@ -55,7 +52,10 @@ const MobilePage = () => {
             />
           </FormControl>
           <Box sx={{ flexShrink: 1 }}>
-            <Button sx={{ flexBasis: '100%', height: '100%'}} variant="contained" endIcon={<SearchOutlined />}>
+            <Button 
+              onClick={() => { setAppliedFilter({text: filter.text}) }}
+              sx={{ flexBasis: '100%', height: '100%'}} variant="contained" endIcon={<SearchOutlined />}
+            >
               Search
             </Button>
           </Box>
@@ -65,7 +65,9 @@ const MobilePage = () => {
       <InfiniteScroll<Question>
         itemWrapperSx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
         pageSize={10}
-        url={'http://localhost:8080/api/questions'}
+        filter={{ ...appliedFilter }}
+        //url={BASE_URL + API_ENDPOINT}
+        fetchFunction={getQuestions}
         itemComponent={question => {
           return <QuestionCard question={question} answersGiven={answersGiven}/>
         }

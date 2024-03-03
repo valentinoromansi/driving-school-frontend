@@ -60,7 +60,7 @@ export const AnswersGroup = ({ answers, answersGiven }: AnswersGroupProps) => {
           return ( 
             <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', borderRadius: '0.65rem', padding: '0.7rem', gap: '0.5rem', ...sx.wrapper }} >
             { answer.correct
-              ? <CheckCircleIcon sx={{ alignSelf: 'center', ...sx.icon }} />
+              ? <CheckCircleIcon sx={{ alignSelf: 'center', ...sx.icon }}/>
               : <CancelIcon sx={{ alignSelf: 'center', ...sx.icon }}/>
             } 
             <Typography sx={{ marginTop: '1px' }}>{answer.text}</Typography>

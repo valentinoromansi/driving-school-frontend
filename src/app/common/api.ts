@@ -1,4 +1,7 @@
-import { AxiosResponseHeaders, RawAxiosResponseHeaders } from "axios";
+import axios, { AxiosResponse, AxiosResponseHeaders, RawAxiosResponseHeaders } from "axios";
+import Questions from "../questions/page";
+import { Page } from "../model/Page";
+import { QuestionsFilter } from "../model/filter";
 
 export const HeaderKey = {
   'X-Total-Count': 'X-Total-Count'
@@ -23,7 +26,7 @@ export class DsHeaders {
     const valueStr: string | null = this.get(key)
     if(!valueStr)
       return null
-    return +valueStr ? +valueStr : null
+    return isNaN(+valueStr) ? null : +valueStr
   }
   
 }
@@ -32,3 +35,17 @@ export type ApiResponse<T> = {
   questions: T;
   headers: DsHeaders
 }
+
+
+
+
+export const BASE_URL = 'http://localhost:8080/api/'
+export const API_ENDPOINT = {
+  'questions': 'questions'
+} as const
+
+export const getQuestions = (page: Page, filter: QuestionsFilter): Promise<AxiosResponse<any, any>> => {
+  return axios.get(BASE_URL + API_ENDPOINT['questions'], { params: { ...page, ...filter }})
+}
+
+
