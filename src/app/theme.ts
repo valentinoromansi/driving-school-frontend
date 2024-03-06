@@ -1,7 +1,7 @@
 'use client'
 
 import { createTheme } from "@mui/material";
-import { red } from "@mui/material/colors";
+import { blue, red } from "@mui/material/colors";
 
 const theme = createTheme({
   typography: {
@@ -19,18 +19,35 @@ const theme = createTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(','),
+  },
+  palette: {
+    primary: {
+      main: blue[500]
+    },
+    text: {
+      primary: '#333',
+    },
+    background: {
+      paper: '#f9f9f9',
+      default: '#f4f4f4'
+    }
+  },
+  components: {
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontWeight: 'bold',
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: '#aaa',
+        }
+      }
+    },    
   }
-  //palette: {
-  //  primary: {
-  //    main: red[500],
-  //  },
-  //  text: {
-  //    primary: 'red'
-  //  },
-  //  background: {
-  //    paper: 'orange'
-  //  }
-  //},
 });
 
 export default theme;

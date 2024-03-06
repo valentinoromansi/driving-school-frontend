@@ -9,10 +9,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { SortDirection } from '../model/model';
+import { SortDirection } from '../../model/model';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { NoDataRow } from './no-data-row';
-import { PaginationResult } from '../hook/use-pagination';
+import { PaginationResult } from '../../hook/use-pagination';
 // import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 // import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 

@@ -12,7 +12,7 @@ type AnswerState = 'default' | 'correct-not-answered' | 'correct' | 'wrong'
 
 type AnswersGroupProps = {
   answers: Answer[],
-  answersGiven: AnswerGiven[]
+  answersGiven?: AnswerGiven[]
 }
 
 

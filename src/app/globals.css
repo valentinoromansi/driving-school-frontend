@@ -88,13 +88,14 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: '#333';
   background: linear-gradient(
       to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(236, 236, 236)
+    ),
+    rgb(255, 255, 255);
+  min-height: 100vh;
 }
 
 a {
@@ -102,9 +103,9 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 }
 
@@ -128,7 +129,7 @@ a {
  
  *::-webkit-scrollbar-thumb
  {
-   background-color: #F90;	
+   background-color: #2196f3;	
    background-image: -webkit-linear-gradient(45deg,
                                              rgba(255, 255, 255, .2) 25%,
                          transparent 25%,

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosResponseHeaders, RawAxiosResponseHeaders } from "axios";
-import Questions from "../questions/page";
+import QuestionsAnswers from "../questions-answers/page";
 import { Page } from "../model/Page";
 import { QuestionsFilter } from "../model/filter";
 

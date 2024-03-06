@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import usePagination from '../hook/use-pagination'
-import DsTable, { ColumnDefinition } from '../common/ds-table'
+import DsTable, { ColumnDefinition } from '../common/component/ds-table'
 import { Question } from '../model/model'
-import { Answer, AnswersGroup } from './answers-group';
+import { Answer, AnswersGroup } from '../common/component/answers-group';
 import { Chip } from '@mui/material';
 import axios from 'axios';
 import { ApiResponse, DsHeaders } from '../common/api';

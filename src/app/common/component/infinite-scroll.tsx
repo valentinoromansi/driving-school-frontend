@@ -3,13 +3,13 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { DsHeaders, getQuestions } from "./api";
+import { DsHeaders, getQuestions } from "../api";
 import axios, { AxiosResponse } from 'axios'
 import Skeleton from "react-loading-skeleton";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { SxProps } from "@mui/material";
 import { Box } from "@mui/system";
-import { Page } from "../model/Page";
+import { Page } from "../../model/Page";
 
 
 type InfiniteQuestionsProps<ResponseDataT> = {
@@ -58,8 +58,6 @@ export const InfiniteScroll = <ResponseDataT,> ({
   }, [inView, hasNextPage])
 
   const initialLoading = totalResultCount === null;
-
-  console.log("xxxx", filter)
 
   return(
     <Box style={{ overflow: 'scroll', height: '100%', boxSizing: 'content-box', marginRight: '-16px'}}>
