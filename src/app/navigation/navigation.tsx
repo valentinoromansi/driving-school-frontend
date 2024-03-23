@@ -13,8 +13,9 @@ import { NavigationItem } from "./navigation-item";
 
 const tabProps = {
   'exam-simulation': { icon: <DvrTwoToneIcon/>, label: "SIMULACIJA ISPITA" },
-  'finished-exams': { icon: <FactCheckTwoToneIcon />, label: "PITANJA/ODGOVORI" },
-  'questions-answers': { icon: <DnsTwoToneIcon />, label: "PITANJA/ODGOVORI" }
+  'finished-exams': { icon: <FactCheckTwoToneIcon />, label: "RIJEŠENI ISPITI" },
+  'questions-answers': { icon: <DnsTwoToneIcon />, label: "PITANJA/ODGOVORI" },
+  'test-page': { icon: <DnsTwoToneIcon />, label: "test-page" }
 } satisfies Record<string, {icon: JSX.Element, label: string}>
 
 type RouteKey = keyof typeof tabProps
