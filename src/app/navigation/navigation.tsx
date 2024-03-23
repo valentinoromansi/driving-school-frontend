@@ -31,9 +31,11 @@ export const Navigation = () => {
       router.push(`/${key}`)
     }
 
+    const tabWidth = `${100/3}%`;
+
     return(
       <>
-        <Box sx={{ width: "100%", display: 'grid', gridTemplateColumns: '33.33% 33.33% 33.33%' }}>
+        <Box sx={{ width: "100%", display: 'grid', gridTemplateColumns: `${tabWidth} ${tabWidth} ${tabWidth}` }}>
           {
             (Object.keys(tabProps) as RouteKey[]).map(key => {
               const { icon, label } = tabProps[key];
