@@ -26,18 +26,10 @@ export const Navigation = () => {
 
     const [selected, setSelected] = useState<RouteKey>('questions-answers');
 
-    for (const [key, value] of Object.entries(tabProps)) {
-      console.log(`You have ${value} ${key}`);
-    }
-
     const onNavTabClick = (key: RouteKey) => {
       setSelected(key); 
       router.push(`/${key}`)
     }
-
-    const isDesktopOrLaptop = useMediaQuery({
-      query: `(min-width: ${MOBILE_BREAKPOINT}px)`
-    })
 
     return(
       <>
