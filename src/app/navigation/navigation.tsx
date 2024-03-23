@@ -10,18 +10,26 @@ import { useMediaQuery } from "react-responsive";
 import { MOBILE_BREAKPOINT } from "../common/constants";
 import { NavigationItem } from "./navigation-item";
 
-const RouteKey = {
-    'exam-simulation': 'exam-simulation',
-    'finished-exams': 'finished-exams',
-    'questions-answers': 'questions-answers'
-} as const
-type RouteKey = keyof typeof RouteKey
 
-const tabProps: Record<RouteKey, { icon: JSX.Element, label: string }> = {
-    'exam-simulation': { icon: <DvrTwoToneIcon/>, label: "SIMULACIJA ISPITA" },
-    'finished-exams': { icon: <FactCheckTwoToneIcon />, label: "RIJEŠENI ISPITI" },
-    'questions-answers': { icon: <DnsTwoToneIcon />, label: "PITANJA/ODGOVORI" }
-}
+const tabProps = {
+  'exam-simulation': { icon: <DvrTwoToneIcon/>, label: "SIMULACIJA ISPITA" },
+  'finished-exams': { icon: <FactCheckTwoToneIcon />, label: "PITANJA/ODGOVORI" },
+  'questions-answers': { icon: <DnsTwoToneIcon />, label: "PITANJA/ODGOVORI" }
+} satisfies Record<string, {icon: JSX.Element, label: string}>
+
+type RouteKey = keyof typeof tabProps
+
+
+
+//type test = keyof typeof tabProps
+
+
+// const RouteKey = {
+//     'exam-simulation': 'exam-simulation',
+//     'finished-exams': 'finished-exams',
+//     'questions-answers': 'questions-answers'
+// } as const
+// type RouteKey = keyof typeof RouteKey
 
 
 export const Navigation = () => {
@@ -30,9 +38,13 @@ export const Navigation = () => {
 
     const [selected, setSelected] = useState<RouteKey>('questions-answers');
 
+    for (const [key, value] of Object.entries(tabProps)) {
+      console.log(`You have ${value} ${key}`);
+    }
+
     const onNavTabClick = (key: RouteKey) => {
       setSelected(key); 
-      router.push(`/${RouteKey[key]}`)
+      router.push(`/${key}`)
     }
 
     const isDesktopOrLaptop = useMediaQuery({
@@ -42,9 +54,12 @@ export const Navigation = () => {
     return(
       <>
         <Box sx={{ width: "100%", display: 'grid', gridTemplateColumns: '33.33% 33.33% 33.33%' }}>
-          <NavigationItem<RouteKey> itemKey='exam-simulation' label='SIMULACIJA ISPITA' icon={<DvrTwoToneIcon/>} onClick={onNavTabClick} selected={selected === 'exam-simulation'}/>
-          <NavigationItem<RouteKey> itemKey='finished-exams' label='RIJEŠENI ISPITI' icon={<FactCheckTwoToneIcon/>} onClick={onNavTabClick} selected={selected == 'finished-exams'}/>
-          <NavigationItem<RouteKey> itemKey='questions-answers' label='PITANJA/ODGOVORI' icon={<DnsTwoToneIcon/>} onClick={onNavTabClick} selected={selected == 'questions-answers'}/>
+          {
+            (Object.keys(tabProps) as RouteKey[]).map(key => {
+              const { icon, label } = tabProps[key];
+              return <NavigationItem<RouteKey> itemKey={key} label={label} icon={icon} onClick={onNavTabClick} selected={selected === key}/>
+            })
+          }
         </Box>
       </>
     )
