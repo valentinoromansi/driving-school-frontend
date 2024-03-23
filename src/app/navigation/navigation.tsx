@@ -20,18 +20,6 @@ const tabProps = {
 type RouteKey = keyof typeof tabProps
 
 
-
-//type test = keyof typeof tabProps
-
-
-// const RouteKey = {
-//     'exam-simulation': 'exam-simulation',
-//     'finished-exams': 'finished-exams',
-//     'questions-answers': 'questions-answers'
-// } as const
-// type RouteKey = keyof typeof RouteKey
-
-
 export const Navigation = () => {
 
     const router = useRouter()
